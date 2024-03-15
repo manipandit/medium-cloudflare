@@ -5,6 +5,7 @@ import { SignupInputs } from "@manipandit/medium-common";
 import axios from "axios";
 import { backendUrl } from "../utils/util";
 import { useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -13,10 +14,12 @@ export default function Signup() {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
   // console.log(signupInputs);
 
   const signup = async () => {
     try {
+      setLoading(true);
       const response = await axios.post(
         `${backendUrl}/user/signup`,
         signupInputs
@@ -27,6 +30,8 @@ export default function Signup() {
       navigate("/blogs");
     } catch (error) {
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -85,10 +90,18 @@ export default function Signup() {
 
           <div>
             <button
-              className="w-full p-2 text-white bg-[#121212] rounded-md"
+              className="w-full relative p-2 text-white bg-[#121212] rounded-md"
               onClick={signup}
             >
-              Sign up
+              {loading ? (
+                <ClipLoader
+                  color="white"
+                  size={15}
+                  className="flex items-center justify-center "
+                />
+              ) : (
+                "Sign up"
+              )}
             </button>
           </div>
         </div>

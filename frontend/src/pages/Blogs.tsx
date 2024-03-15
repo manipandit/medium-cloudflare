@@ -1,6 +1,7 @@
 import Appbar from "../components/Appbar";
+import BlogsSkeleton from "../components/BlogsSkeleton";
 import { useBlogs } from "../hooks/useBlogs";
-import { Blog } from "./Blog";
+import { BlogCard } from "./BlogCard";
 
 export function Blogs() {
   const { loading, blogs } = useBlogs();
@@ -9,7 +10,13 @@ export function Blogs() {
     return (
       <div className="relative">
         <Appbar />
-        <div>Loading...</div>
+        <div className="flex flex-col items-center justify-center">
+          <BlogsSkeleton />
+          <BlogsSkeleton />
+          <BlogsSkeleton />
+          <BlogsSkeleton />
+          <BlogsSkeleton />
+        </div>
       </div>
     );
   }
@@ -17,10 +24,11 @@ export function Blogs() {
     <div className="relative">
       <Appbar />
       <div className="flex justify-center">
-        <div className="flex flex-col">
+        <div className="flex flex-col items-center w-full ">
           {blogs.map((blog) => {
             return (
-              <Blog
+              <BlogCard
+                id={blog.id}
                 key={blog.id}
                 authorName={blog.author.name || "Anonymous"}
                 title={blog.title}
@@ -29,12 +37,6 @@ export function Blogs() {
               />
             );
           })}
-          <Blog
-            authorName="mani"
-            title="Unveiling the Power of Mindfulness: Cultivating Peace in a Chaotic World"
-            content="In today's fast-paced world, finding moments of tranquility can feel like searching for a needle in a haystack. Amidst the hustle and bustle of daily life, stress often becomes a constant companion, taking a toll on our mental and physical well-being. However, amidst the chaos, there exists a potent tool for cultivating peace and resilience: mindfulness. Mindfulness, rooted in ancient practices but increasingly embraced in modern psychology, involves being fully present and aware of our thoughts, feelings, sensations, and surroundings without judgment. It's about tuning into the present moment, accepting it as it is, and letting go of the need to control or change it.Research has shown that regular mindfulness practice can lead to a myriad of benefits, including reduced stress, anxiety, and depression, enhanced focus and cognitive function, improved emotional regulation, and increased overall well-being"
-            publishedDate="Mar 13, 2024"
-          />
         </div>
       </div>
     </div>

@@ -1,28 +1,31 @@
-import Avatar from "../components/Avatar";
+import { useParams } from "react-router-dom";
+import useBlogId from "../hooks/useBlogId";
+import Appbar from "../components/Appbar";
+import FullBlog from "../components/FullBlog";
+import BlogSkeleton from "../components/BlogSkeleton";
 
-interface BlogProps {
-  title: string;
-  content: string;
-  authorName: string;
-  publishedDate: string;
-}
+export function Blog() {
+  const { id } = useParams();
 
-export function Blog({ title, content, authorName, publishedDate }: BlogProps) {
-  return (
-    <div className="flex flex-col max-w-xl p-3 border-b gap-y-3 border-slate-300">
-      <div className="flex items-center gap-x-3">
-        <div>
-          <Avatar name={"mani"} />
+  const { loading, blog } = useBlogId({
+    id: id || "",
+  });
+  if (loading || !blog) {
+    return (
+      <div>
+        <Appbar />
+        <div className="mt-10 ml-10">
+          <BlogSkeleton />
         </div>
-        <div className="text-base capitalize">{authorName}</div>
-        <div className="text-sm font-extralight">{publishedDate}</div>
       </div>
-
-      <div className="text-xl font-bold">{title}</div>
-      <div className="text-sm font-normal">
-        {content.length > 100 ? `${content.slice(0, 220)}...` : `${content}`}
+    );
+  }
+  return (
+    <div>
+      <Appbar />
+      <div>
+        <FullBlog blog={blog} />
       </div>
-      <div>{/* {Math.ceil(`${content.length/100} min read`)} */}</div>
     </div>
   );
 }
